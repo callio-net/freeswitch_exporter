@@ -68,7 +68,7 @@ List of exposed metrics:
 ```bash
 # HELP freeswitch_current_calls Number of calls active
 # TYPE freeswitch_current_calls gauge
-# HELP freeswitch_current_regsitrations Number of registrations active
+# HELP freeswitch_current_registrations Number of registrations active
 # TYPE freeswitch_current_registrations gauge
 # HELP freeswitch_current_idle_cpu CPU idle
 # TYPE freeswitch_current_idle_cpu gauge
