@@ -52,6 +52,7 @@ const (
 var (
 	metricList = []Metric{
 		{Name: "current_calls", Type: prometheus.GaugeValue, Help: "Number of calls active", Command: "api show calls count as json"},
+		{Name: "current_registrations", Type: prometheus.GaugeValue, Help: "Number of registrations active", Command: "api show registrations count as json"},
 		{Name: "uptime_seconds", Type: prometheus.GaugeValue, Help: "Uptime in seconds", Command: "api uptime s"},
 		{Name: "time_synced", Type: prometheus.GaugeValue, Help: "Is FreeSWITCH time in sync with exporter host time", Command: "api strepoch"},
 		{Name: "sessions_total", Type: prometheus.CounterValue, Help: "Number of sessions since startup", RegexIndex: 1},
@@ -230,6 +231,18 @@ func (c *Collector) fetchMetric(metricDef *Metric) (float64, error) {
 
 	switch metricDef.Name {
 	case "current_calls":
+		r := struct {
+			Count float64 `json:"row_count"`
+		}{}
+
+		err = json.Unmarshal(response, &r)
+
+		if err != nil {
+			return 0, fmt.Errorf("cannot read JSON response: %w", err)
+		}
+
+		return r.Count, nil
+	case "current_registrations":
 		r := struct {
 			Count float64 `json:"row_count"`
 		}{}
